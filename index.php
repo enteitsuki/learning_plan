@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET')  {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
 
     $sql = "UPDATE plans SET status = 'done' WHERE id = :id";
@@ -74,15 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')  {
             学習内容: <input type="text" name="title"><br>
             期限日: <input type="date" name="due_date">
             <input type="submit" value="追加">
-            <span style="color:red;">
-                <?php if ($errors) : ?>
-                    <ul>
-                        <?php foreach ($errors as $error) : ?>
-                            <li><?= h($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </span>
+            <?php if ($errors) : ?>
+                <ul>
+                    <?php foreach ($errors as $error) : ?>
+                        <li class="expired"><?= h($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </form>
     </div>
 
@@ -91,17 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')  {
         <?php foreach ($notyet_plans as $plan) : ?>
             <?php if (date('Y-m-d') >= $plan['due_date']) : ?>
                 <li class="expired">
-                    <a href="index.php?id=<?= h($plan['id']) ?>">[完了]</a>
-                    <a href="edit.php?id=<?= h($plan['id']) ?>">[編集]</a>
-                    <?= h($plan['title']) ?>…完了期限: <?= h(date('Y/m/d', strtotime($plan['due_date']))) ?>
-                </li>
             <?php else : ?>
                 <li>
+            <?php endif; ?>
                     <a href="index.php?id=<?= h($plan['id']) ?>">[完了]</a>
                     <a href="edit.php?id=<?= h($plan['id']) ?>">[編集]</a>
                     <?= h($plan['title']) ?>…完了期限: <?= h(date('Y/m/d', strtotime($plan['due_date']))) ?>
                 </li>
-            <?php endif; ?>
         <?php endforeach; ?>
     </ul>
     <hr>

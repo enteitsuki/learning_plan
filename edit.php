@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
         $sql = 'UPDATE plans SET title = :title, due_date = :due_date WHERE id = :id';
-        
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->bindParam(':title', $title, PDO::PARAM_STR);
@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編集画面</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -60,16 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="" method="post">
             学習内容: <input type="text" name="title" value="<?= h($plan['title']) ?>"><br>
             期限日: <input type="date" name="due_date" value="<?= h($plan['due_date']) ?>">
-            <input type="submit" value="追加">
-            <span style="color:red;">
-                <?php if ($errors) : ?>
-                    <ul>
-                        <?php foreach ($errors as $error) : ?>
-                            <li><?= h($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </span>
+            <input type="submit" value="編集">
+            <?php if ($errors) : ?>
+                <ul>
+                    <?php foreach ($errors as $error) : ?>
+                        <li class="expired"><?= h($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </form>
     </div>
     <a href="index.php">戻る</a>
